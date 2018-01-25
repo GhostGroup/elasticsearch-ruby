@@ -197,7 +197,7 @@ module Elasticsearch
       def __rescue_from_not_found(&block)
         yield
       rescue Exception => e
-        if e.class.to_s =~ /NotFound/ || e.message =~ /Not\s*Found|404/i
+        if e.class.to_s =~ /NotFound/ || e.message =~ /404\s+Not\s*Found/
           false
         else
           raise e

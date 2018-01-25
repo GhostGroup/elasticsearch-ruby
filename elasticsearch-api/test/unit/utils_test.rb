@@ -236,17 +236,19 @@ module Elasticsearch
             assert_equal( false, __rescue_from_not_found { raise NotFound })
           end
 
-          should "return false if exception message contains 'Not Found'" do
-            assert_equal( false, __rescue_from_not_found { raise Exception.new "Not Found" })
+          should "return false if exception message contains '404 Not Found'" do
+            assert_equal( false, __rescue_from_not_found { raise Exception.new "404 NotFound" })
           end
 
-          should "return false if exception message contains '404'" do
-            assert_equal( false, __rescue_from_not_found { raise Exception.new "404" })
-          end
-
-          should "raise exception if exception class name and message do not contain NotFound/404" do
+          should "raise exception if exception class does not contain NotFound" do
             assert_raise Exception do
               __rescue_from_not_found { raise Exception.new "Any other exception" }
+            end
+          end
+
+          should "raise exception when error message contains 404" do
+            assert_raise Exception do
+              __rescue_from_not_found { raise Exception.new "Response containing ID with 404 in it" }
             end
           end
 
