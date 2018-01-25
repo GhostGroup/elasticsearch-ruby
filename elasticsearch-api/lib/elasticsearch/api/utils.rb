@@ -188,7 +188,7 @@ module Elasticsearch
       end
 
       # Calls given block, rescuing from any exceptions. Returns `false`
-      # if exception contains NotFound/404 in its class name or message, else re-raises exception.
+      # if exception contains NotFound in its class name else re-raises exception.
       #
       # @yield [block] A block of code to be executed with exception handling.
       #
@@ -197,7 +197,7 @@ module Elasticsearch
       def __rescue_from_not_found(&block)
         yield
       rescue Exception => e
-        if e.class.to_s =~ /NotFound/ || e.message =~ /404\s+Not\s*Found/
+        if e.class.to_s =~ /NotFound/ || e.message =~ /^\[404\]/
           false
         else
           raise e
